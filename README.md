@@ -1,58 +1,169 @@
-﻿# PhotoGallery
+# Derek's Photography Portfolio
 
-## About this solution
+A full-stack, modular .NET 9 photography portfolio website built with the ABP Framework and ASP.NET Core Razor Pages. This repository demonstrates clean DDD boundaries, AutoMapper-based DTO mapping, FluentValidation at the application layer, and a Razor Pages front end designed for fast, SEO-friendly server-side rendering.
 
-This is a layered startup solution based on [Domain Driven Design (DDD)](https://abp.io/docs/latest/framework/architecture/domain-driven-design) practises. All the fundamental ABP modules are already installed. Check the [Application Startup Template](https://abp.io/docs/latest/solution-templates/layered-web-application) documentation for more info.
+## Overview
 
-### Pre-requirements
+PhotoGallery manages Albums and Photos as first-class concepts and exposes them through application services and a REST API. A Razor Pages “PublicWeb” front end renders browsable views for albums and photos using a Bootstrap 5 template, with a focus on low latency via direct, in-process calls to application services (no HTTP hop inside the same process). The repository includes a DbMigrator for reliable database provisioning and a comprehensive specs folder that documents plans, API contracts, and checklists.
 
-* [.NET9.0+ SDK](https://dotnet.microsoft.com/download/dotnet)
-* [Node v18 or 20](https://nodejs.org/en)
+## Key Features
 
-### Configurations
+- Clean architecture: Modular separation of Domain, Application, API, EF Core, and Razor Pages layers.
+- Full CRUD support for albums and photos with RESTful endpoints and DTO mapping.
+- Server-side rendering (SSR) using Razor Pages and Bootstrap 5 for accessibility and SEO.
+- Low-latency integration: In-process service calls and IMemoryCache reduce response times.
+- Database automation: EF Core migrations and a containerized DbMigrator streamline setup.
+- Object storage: Cloudflare R2 (S3-compatible) with CDN-aware URL generation.
+- Dynamic images: On-the-fly resize/format with ImageSharp and caching.
+- Comprehensive documentation: Specs folder with contracts, design plans, and success criteria.
+  
+## Tech Stack
 
-The solution comes with a default configuration that works out of the box. However, you may consider to change the following configuration before running your solution:
+- Languages: C#, SQL
+- Frameworks: .NET 9, ABP Framework, ASP.NET Core Razor Pages
+- Libraries: EF Core, AutoMapper, FluentValidation, IMemoryCache, ImageSharp
+- Storage/CDN: Cloudflare R2 (S3-compatible via AWS SDK for .NET), optional CDN domain
+- Frontend: Bootstrap 5 (SSR)
+- Database: SQL Server
+- DevOps: Docker, EF Core Migrations, DbMigrator, Swagger/OpenAPI
 
+## Screenshots
 
-### Before running the application
+### Home:
+  
+  <img width="1817" height="927" alt="image" src="https://github.com/user-attachments/assets/4f3b95e1-90af-45fd-b325-cce6553e2a23" />
+  <img width="1817" height="748" alt="image" src="https://github.com/user-attachments/assets/46c6ea6e-5e47-4953-a8aa-7e70553aaf3f" />
 
-* Run `abp install-libs` command on your solution folder to install client-side package dependencies. This step is automatically done when you create a new solution, if you didn't especially disabled it. However, you should run it yourself if you have first cloned this solution from your source control, or added a new client-side package dependency to your solution.
-* Run `PhotoGallery.DbMigrator` to create the initial database. This step is also automatically done when you create a new solution, if you didn't especially disabled it. This should be done in the first run. It is also needed if a new database migration is added to the solution later.
+### Albums Grid:
 
-#### Generating a Signing Certificate
+  <img width="1819" height="964" alt="image" src="https://github.com/user-attachments/assets/ece51eba-09b9-463e-a80a-ed1b3fb69f75" />
+  <img width="1820" height="964" alt="image" src="https://github.com/user-attachments/assets/acce19be-696e-4370-82c2-6297d52c8bbb" />
+  
+### Photo Details:
 
-In the production environment, you need to use a production signing certificate. ABP Framework sets up signing and encryption certificates in your application and expects an `openiddict.pfx` file in your application.
+  <img width="1836" height="964" alt="image" src="https://github.com/user-attachments/assets/6f5b35b7-f1f5-47ca-aaf5-ffdfbe2d9bf2" />
 
-To generate a signing certificate, you can use the following command:
+## Architecture Overview
 
-```bash
-dotnet dev-certs https -v -ep openiddict.pfx -p a1c070eb-0d5e-409c-b2be-1e0a0b70caf3
-```
+- Domain Layer: Pure entities and domain logic (Albums, Photos).
+- Application Layer: Orchestrates use cases, applies validation, and maps entities ↔ DTOs.
+- API Layer: REST endpoints that delegate to application services.
+- PublicWeb: Razor Pages front-end calling application services in-process for minimal latency.
+- Persistence: EF Core for ORM, repositories, and migrations.
+- DbMigrator: Applies migrations and seeds data automatically (supports Dockerized runs).
 
-> `a1c070eb-0d5e-409c-b2be-1e0a0b70caf3` is the password of the certificate, you can change it to any password you want.
+Design Patterns: Repository/UoW, DTO mapping via AutoMapper, FluentValidation, async I/O, and caching for heavy read paths.
 
-It is recommended to use **two** RSA certificates, distinct from the certificate(s) used for HTTPS: one for encryption, one for signing.
+## Project Structure
 
-For more information, please refer to: [OpenIddict Certificate Configuration](https://documentation.openiddict.com/configuration/encryption-and-signing-credentials.html#registering-a-certificate-recommended-for-production-ready-scenarios)
+````text
+src/
+├─ PhotoGallery.Domain/               # Domain entities, domain module (Albums, Photos)
+├─ PhotoGallery.Application/          # Application services, validators, AutoMapper profile
+├─ PhotoGallery.Application.Contracts/# DTOs, contracts shared across layers
+├─ PhotoGallery.EntityFrameworkCore/  # DbContext, entity configs, migrations
+├─ PhotoGallery.HttpApi/              # API module (controllers live here in ABP style)
+├─ PhotoGallery.HttpApi.Host/         # API host (web server entry point)
+├─ PhotoGallery.PublicWeb/            # Razor Pages public site (SSR, Bootstrap 5)
+└─ PhotoGallery.DbMigrator/           # Migration/seed runner for reliable setup
 
-> Also, see the [Configuring OpenIddict](https://abp.io/docs/latest/Deployment/Configuring-OpenIddict#production-environment) documentation for more information.
+specs/
+├─ 002-backend-api/                   # Data model, contracts (albums, photos), plan, tasks
+├─ 003-public-site/                   # Public site plan, template, http-client config (legacy)
+├─ 004-admin-site/                    # Admin site plan (React, future)
+└─ complete-project-plan.md           # End-to-end plans
+````
 
-### Solution structure
+## Getting Started (Windows)
 
-This is a layered monolith application that consists of the following applications:
+Prerequisites:
+- .NET 9 SDK
+- SQL Server (LocalDB or full), or adjust EF Core provider/connection string as needed
 
-* `PhotoGallery.DbMigrator`: A console application which applies the migrations and also seeds the initial data. It is useful on development as well as on production environment.
+1) Restore, build, and run tests:
+````powershell
+dotnet restore
+dotnet build
+dotnet test
+````
 
+2) Configure database connection:
+- Update the Default connection string in appsettings.json for:
+  - PhotoGallery.DbMigrator
+  - PhotoGallery.HttpApi.Host
+  - PhotoGallery.PublicWeb (if it maintains its own connection/app settings)
 
-## Deploying the application
+3) Apply migrations and seed:
+````powershell
+dotnet run --project src/PhotoGallery.DbMigrator/PhotoGallery.DbMigrator.csproj
+````
 
-Deploying an ABP application follows the same process as deploying any .NET or ASP.NET Core application. However, there are important considerations to keep in mind. For detailed guidance, refer to ABP's [deployment documentation](https://abp.io/docs/latest/Deployment/Index).
+4) Run the API host:
+````powershell
+dotnet run --project src/PhotoGallery.HttpApi.Host/PhotoGallery.HttpApi.Host.csproj
+````
 
-### Additional resources
+5) Run the Public site (Razor Pages):
+- Preferred: direct in-process service integration in the same solution.
+````powershell
+dotnet run --project src/PhotoGallery.PublicWeb/PhotoGallery.PublicWeb.csproj
+````
 
-You can see the following resources to learn more about your solution and the ABP Framework:
+Notes:
+- For single-process hosting, PublicWeb can reference Application and EF Core modules directly (per Project-Specific Guidelines).
+- For multi-process hosting, PublicWeb can be adapted to call HttpApi via HttpClient; specs include an http-client-config, but the chosen architecture favors direct service calls for performance.
 
-* [Web Application Development Tutorial](https://abp.io/docs/latest/tutorials/book-store/part-1)
-* [Application Startup Template](https://abp.io/docs/latest/startup-templates/application/index)
+## Development Guidelines
 
+- ABP DDD layering and module conventions.
+- FluentValidation at the application layer.
+- AutoMapper for DTO mapping.
+- Async/await for all I/O.
+- Razor Pages with DI for services and SSR for SEO.
+- IMemoryCache for public read models.
+- Error handling with graceful fallbacks and user-friendly pages.
 
+See:
+- specs/002-backend-api/contracts for Albums and Photos API definitions.
+- specs/003-public-site/public-site-template for the Bootstrap 5 theme used by PublicWeb.
+
+## Testing
+
+Test strategy per specs:
+- Unit tests for application services and Razor Page models with mocked repositories/cache.
+- Integration tests for API behavior through HttpApi.
+- E2E smoke tests for public user journeys (home → album → photo).
+
+Run all tests:
+````powershell
+dotnet test
+````
+
+Coverage targets (goal): 80%+ for core business logic.
+
+## Deployment
+
+- Use DbMigrator to apply migrations as a pre-deploy step.
+- Host API and PublicWeb together (single process) for lowest latency, or separately for independent scaling.
+- Enforce HTTPS and configure logging/monitoring. ABP integrates well with Serilog and Health Checks.
+
+Containerization:
+- DbMigrator includes Dockerfiles for containerized migration execution.
+- Additional Dockerfiles for API/PublicWeb can be added as the project stabilizes.
+
+## Roadmap
+
+- PublicWeb
+  - Complete album/photo pages and caching policies.
+  - Pagination, filtering, and SEO metadata.
+  - Accessibility pass and Lighthouse optimization.
+
+- Admin Site (future, React)
+  - React + TypeScript (Vite), role-based admin for album/photo management.
+  - Integrate with ABP Identity/OpenIddict for authentication.
+  - Reuse REST endpoints from HttpApi.
+  - Add CI/CD workflow and E2E tests (Playwright).
+
+- Observability and Ops
+  - Health checks, structured logging, basic dashboards.
+  - Optional swap to distributed cache for scale-out.
