@@ -1,0 +1,129 @@
+@page
+@model AlbumsModel
+@{
+    ViewData["Title"] = "All Albums - Photo Gallery";
+    ViewData["ActivePage"] = "Albums";
+}
+
+<!-- Page Header Start -->
+<div class="container-fluid p-5 mb-5 bg-dark text-secondary">
+    <div class="row g-5 py-5">
+        <div class="col-12 text-center wow fadeIn" data-wow-delay="0.1s">
+            <h1 class="display-3 text-white mb-3">Photo Albums</h1>
+            <p class="mb-0">Browse through my collection of photo albums</p>
+            @if (!string.IsNullOrEmpty(Model.Topic))
+            {
+                <p class="mt-3">
+                    <span class="badge bg-primary">Filtered by: @Model.Topic</span>
+                    <a asp-page="/Albums" class="btn btn-sm btn-outline-light ms-2">Clear Filter</a>
+                </p>
+            }
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Albums Grid Start -->
+<div class="container-fluid p-5">
+    @if (Model.Albums.Any())
+    {
+        <div class="row g-4">
+            @foreach (var album in Model.Albums)
+            {
+                <div class="col-lg-4 col-md-6 wow fadeIn" data-wow-delay="0.@(Model.Albums.IndexOf(album) % 3 + 1)s">
+                    <div class="bg-light rounded h-100 p-4">
+                        @if (!string.IsNullOrEmpty(album.CoverPhotoUrl))
+                        {
+                            if (album.CoverPhotoUrl!.StartsWith("/uploads/photos/"))
+                            {
+                                var relCover = album.CoverPhotoUrl.Replace("/uploads/photos/", string.Empty).TrimStart('/');
+                                <a asp-page="/Album" asp-route-id="@album.Id">
+                                    <img class="img-fluid rounded mb-3 cover-thumb" src="@($"/img/{relCover}?w=1200&h=400&fit=crop&fmt=webp")" alt="@album.Name">
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-page="/Album" asp-route-id="@album.Id">
+                                    <img class="img-fluid rounded mb-3 cover-thumb" src="@album.CoverPhotoUrl" alt="@album.Name">
+                                </a>
+                            }
+                        }
+                        <h4>
+                            <a asp-page="/Album" asp-route-id="@album.Id" class="text-dark text-decoration-none">
+                                @album.Name
+                            </a>
+                        </h4>
+                        <p class="mb-2">
+                            <a asp-page="/Albums" asp-route-topic="@album.Topic" class="badge bg-primary text-decoration-none">@album.Topic</a>
+                            <span class="ms-2 text-muted"><i class="bi bi-images"></i> @album.PhotoCount photos</span>
+                        </p>
+                        <p class="mb-0">@album.Description</p>
+                        <div class="mt-3">
+                            <a asp-page="/Album" asp-route-id="@album.Id" class="btn btn-primary">View Album</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Pagination -->
+        @if (Model.TotalPages > 1)
+        {
+            <div class="row mt-5">
+                <div class="col-12">
+                    <nav aria-label="Albums pagination">
+                        <ul class="pagination justify-content-center">
+                            <!-- Previous -->
+                            <li class="page-item @(Model.PageNumber <= 1 ? "disabled" : "")">
+                                <a class="page-link" asp-page="/Albums" asp-route-page="@(Model.PageNumber - 1)" asp-route-topic="@Model.Topic" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+
+                            <!-- Page numbers -->
+                            @for (int i = 1; i <= Model.TotalPages; i++)
+                            {
+                                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                                    <a class="page-link" asp-page="/Albums" asp-route-page="@i" asp-route-topic="@Model.Topic">@i</a>
+                                </li>
+                            }
+
+                            <!-- Next -->
+                            <li class="page-item @(Model.PageNumber >= Model.TotalPages ? "disabled" : "")">
+                                <a class="page-link" asp-page="/Albums" asp-route-page="@(Model.PageNumber + 1)" asp-route-topic="@Model.Topic" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        }
+
+        <!-- Stats -->
+        <div class="row mt-4">
+            <div class="col-12 text-center text-muted">
+                <p>Showing @Model.Albums.Count of @Model.TotalCount total albums</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle me-2"></i>
+                    @if (!string.IsNullOrEmpty(Model.Topic))
+                    {
+                        <span>No albums found for topic "@Model.Topic".</span>
+                    }
+                    else
+                    {
+                        <span>No albums available at the moment.</span>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<!-- Albums Grid End -->

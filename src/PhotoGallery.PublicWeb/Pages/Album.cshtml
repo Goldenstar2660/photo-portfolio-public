@@ -1,0 +1,159 @@
+@page "{id:guid?}"
+@model AlbumModel
+@{
+    ViewData["Title"] = Model.Album != null ? Model.Album.Name : "Album Not Found";
+    ViewData["ActivePage"] = "Albums";
+}
+
+@section Styles {
+    <link href="~/css/album.css" rel="stylesheet">
+    <link href="~/css/lightbox.css" rel="stylesheet">
+}
+
+@if (Model.AlbumNotFound)
+{
+    <!-- Album Not Found -->
+    <div class="container-fluid p-5">
+        <div class="row">
+            <div class="col-12 text-center wow fadeIn" data-wow-delay="0.1s">
+                <i class="bi bi-folder-x" style="font-size: 5rem; color: #FEA116;"></i>
+                <h1 class="display-3 mb-3">Album Not Found</h1>
+                <p class="mb-4">The album you're looking for doesn't exist or has been removed.</p>
+                <a asp-page="/Index" class="btn btn-primary">Return to Home</a>
+            </div>
+        </div>
+    </div>
+}
+else if (Model.Album != null)
+{
+    <!-- Album Header (breadcrumbs integrated) -->
+    <div class="container-fluid bg-dark px-4 pt-3 pb-5 mb-4 text-secondary">
+        <!-- Breadcrumbs inside header to avoid extra top spacing -->
+        <div class="container mb-1">
+            <partial name="_BreadcrumbPartial" model="Model.Breadcrumbs" />
+        </div>
+        <div class="row wow fadeIn" data-wow-delay="0.1s">
+            <div class="col-12 text-center">
+                <h1 class="display-3 text-secondary mb-3">@Model.Album.Name</h1>
+                <p class="mb-2">
+                    <span class="badge bg-primary">@Model.Album.Topic</span>
+                    <span class="ms-2"><i class="bi bi-images"></i> @Model.Album.TotalPhotoCount photos</span>
+                    <span class="ms-2"><i class="bi bi-calendar"></i> @Model.Album.CreatedDate.ToString("MMMM yyyy")</span>
+                </p>
+                @if (!string.IsNullOrEmpty(Model.Album.Description))
+                {
+                    <p class="lead mb-0">@Model.Album.Description</p>
+                }
+                <div class="mb-2"></div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.Album.IsEmpty)
+    {
+        <!-- Empty Album State -->
+        <div class="container-fluid p-5">
+            <div class="row">
+                <div class="col-12 text-center wow fadeIn" data-wow-delay="0.1s">
+                    <i class="bi bi-images" style="font-size: 5rem; color: #FEA116;"></i>
+                    <h2 class="mb-3">This Album is Empty</h2>
+                    <p class="mb-4">No photos have been added to this album yet.</p>
+                    <a asp-page="/Index" class="btn btn-primary">Browse Other Albums</a>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Photo Grid -->
+        <div class="container-fluid p-5">
+            <div class="row g-4 photo-grid" data-album-id="@Model.Album.Id">
+                @foreach (var photo in Model.Album.Photos)
+                {
+                    // Use ThumbnailUrl for the photo grid display
+                    var thumbnailSrc = !string.IsNullOrEmpty(photo.ThumbnailUrl) 
+                        ? photo.ThumbnailUrl 
+                        : photo.FullSizeUrl; // Fallback to full size if no thumbnail
+                    
+                    <div class="col-lg-3 col-md-4 col-sm-6 wow fadeIn" data-wow-delay="0.@(Model.Album.Photos.IndexOf(photo) + 1)s">
+                        <div class="photo-item position-relative overflow-hidden rounded"
+                             data-photo-id="@photo.Id"
+                             data-photo-filename="@photo.Title"
+                             data-photo-thumbnail="@photo.ThumbnailUrl"
+                             data-photo-fullsize="@photo.FullSizeUrl"
+                             data-photo-location="@photo.Location"
+                             data-photo-date="@photo.DateTaken?.ToString("o")"
+                             data-photo-width="@photo.Width"
+                             data-photo-height="@photo.Height"
+                             data-photo-filesize="@photo.FormattedFileSize"
+                             data-photo-camera="@photo.CameraModel"
+                             data-photo-aperture="@(photo.Aperture.HasValue ? $"f/{photo.Aperture:0.0}" : null)"
+                             data-photo-shutter="@photo.ShutterSpeed"
+                             data-photo-iso="@(photo.Iso.HasValue ? photo.Iso.ToString() : null)"
+                             data-photo-focallength="@(photo.FocalLength.HasValue ? $"{photo.FocalLength:0.#} mm" : null)">
+                            <img class="img-fluid w-100 lazy-load photo-thumb" 
+                                 data-src="@thumbnailSrc" 
+                                 data-full="@photo.FullSizeUrl"
+                                 src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%23111111' width='400' height='300'/%3E%3C/svg%3E"
+                                 alt="@photo.Title">
+                            
+                            <!-- Photo Overlay on Hover -->
+                            <div class="photo-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-end p-3">
+                                <h6 class="text-white mb-1">@photo.Title</h6>
+                                @if (photo.DateTaken.HasValue)
+                                {
+                                    <small class="text-light"><i class="bi bi-calendar"></i> @photo.DateTaken.Value.ToString("MMMM dd, yyyy")</small>
+                                }
+                                @if (!string.IsNullOrEmpty(photo.Location))
+                                {
+                                    <small class="text-light"><i class="bi bi-geo-alt"></i> @photo.Location</small>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Pagination -->
+            @if (Model.Album.TotalPhotoCount > Model.Album.PageSize)
+            {
+                var totalPages = (int)Math.Ceiling((double)Model.Album.TotalPhotoCount / Model.Album.PageSize);
+                
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <nav aria-label="Photo pagination">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item @(Model.Album.CurrentPage == 1 ? "disabled" : "")">
+                                    <a class="page-link" asp-page="/Album" asp-route-id="@Model.Album.Id" asp-route-page="@(Model.Album.CurrentPage - 1)" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                
+                                @for (int i = 1; i <= totalPages; i++)
+                                {
+                                    <li class="page-item @(Model.Album.CurrentPage == i ? "active" : "")">
+                                        <a class="page-link" asp-page="/Album" asp-route-id="@Model.Album.Id" asp-route-page="@i">@i</a>
+                                    </li>
+                                }
+                                
+                                <li class="page-item @(Model.Album.CurrentPage == totalPages ? "disabled" : "")">
+                                    <a class="page-link" asp-page="/Album" asp-route-id="@Model.Album.Id" asp-route-page="@(Model.Album.CurrentPage + 1)" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}
+
+<!-- Photo Lightbox -->
+<partial name="_PhotoLightboxPartial" />
+
+@section Scripts {
+    <script src="~/js/photo-grid.js"></script>
+    <script src="~/js/lightbox.js"></script>
+}

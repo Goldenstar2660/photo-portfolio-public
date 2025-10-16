@@ -1,0 +1,103 @@
+{
+  "template": "app",
+  "imports": {
+    "Volo.Abp.LeptonXLiteTheme": {
+      "version": "4.3.5",
+      "isInstalled": true
+    },
+    "Volo.Abp.Account": {
+      "version": "9.3.5",
+      "isInstalled": true,
+      "creationTime": "10/14/2025 03:33:33 +00:00"
+    },
+    "Volo.Abp.OpenIddict": {
+      "version": "9.3.5",
+      "isInstalled": true,
+      "creationTime": "10/14/2025 03:33:33 +00:00"
+    },
+    "Volo.Abp.Identity": {
+      "version": "9.3.5",
+      "isInstalled": true,
+      "creationTime": "10/14/2025 03:33:33 +00:00"
+    },
+    "Volo.Abp.SettingManagement": {
+      "version": "9.3.5",
+      "isInstalled": true,
+      "creationTime": "10/14/2025 03:33:33 +00:00"
+    },
+    "Volo.Abp.PermissionManagement": {
+      "version": "9.3.5",
+      "isInstalled": true,
+      "creationTime": "10/14/2025 03:33:33 +00:00"
+    },
+    "Volo.Abp.FeatureManagement": {
+      "version": "9.3.5",
+      "isInstalled": true,
+      "creationTime": "10/14/2025 03:33:33 +00:00"
+    }
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "PhotoGallery.Application": {
+      "path": "src/PhotoGallery.Application/PhotoGallery.Application.abppkg",
+      "folder": "src"
+    },
+    "PhotoGallery.Application.Tests": {
+      "path": "test/PhotoGallery.Application.Tests/PhotoGallery.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "PhotoGallery.Domain.Shared": {
+      "path": "src/PhotoGallery.Domain.Shared/PhotoGallery.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "PhotoGallery.Application.Contracts": {
+      "path": "src/PhotoGallery.Application.Contracts/PhotoGallery.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "PhotoGallery.HttpApi": {
+      "path": "src/PhotoGallery.HttpApi/PhotoGallery.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "PhotoGallery.HttpApi.Client": {
+      "path": "src/PhotoGallery.HttpApi.Client/PhotoGallery.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "PhotoGallery.EntityFrameworkCore.Tests": {
+      "path": "test/PhotoGallery.EntityFrameworkCore.Tests/PhotoGallery.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "PhotoGallery.EntityFrameworkCore": {
+      "path": "src/PhotoGallery.EntityFrameworkCore/PhotoGallery.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "PhotoGallery.TestBase": {
+      "path": "test/PhotoGallery.TestBase/PhotoGallery.TestBase.abppkg",
+      "folder": "test"
+    },
+    "PhotoGallery.Domain.Tests": {
+      "path": "test/PhotoGallery.Domain.Tests/PhotoGallery.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "PhotoGallery.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/PhotoGallery.HttpApi.Client.ConsoleTestApp/PhotoGallery.HttpApi.Client.ConsoleTestApp.abppkg",
+      "folder": "test"
+    },
+    "PhotoGallery.DbMigrator": {
+      "path": "src/PhotoGallery.DbMigrator/PhotoGallery.DbMigrator.abppkg",
+      "folder": "src"
+    },
+    "PhotoGallery.HttpApi.Host": {
+      "path": "src/PhotoGallery.HttpApi.Host/PhotoGallery.HttpApi.Host.abppkg",
+      "folder": "src"
+    },
+    "PhotoGallery.Domain": {
+      "path": "src/PhotoGallery.Domain/PhotoGallery.Domain.abppkg",
+      "folder": "src"
+    }
+  }
+}

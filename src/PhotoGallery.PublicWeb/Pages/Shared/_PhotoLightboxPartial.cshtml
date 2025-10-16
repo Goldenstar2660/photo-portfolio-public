@@ -1,0 +1,45 @@
+@* Photo Lightbox Modal *@
+<div id="photoLightbox" class="lightbox-modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="lightbox-caption">
+    <div class="lightbox-backdrop" aria-hidden="true"></div>
+    
+    <div class="lightbox-container">
+        @* Close button *@
+        <button type="button" class="lightbox-close" aria-label="Close lightbox">
+            <i class="bi bi-x" aria-hidden="true"></i>
+        </button>
+        
+        @* Navigation buttons *@
+        <button type="button" class="lightbox-nav lightbox-prev" aria-label="Previous photo" style="display: none;">
+            <i class="bi bi-chevron-left"></i>
+        </button>
+        <button type="button" class="lightbox-nav lightbox-next" aria-label="Next photo" style="display: none;">
+            <i class="bi bi-chevron-right"></i>
+        </button>
+        
+        @* Loading spinner *@
+        <div class="lightbox-loading" style="display: none;">
+            <div class="spinner-border text-light" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        
+        @* Photo content *@
+        <div class="lightbox-content">
+            <img id="lightbox-image" src="" alt="" class="lightbox-image" />
+            
+            @* Metadata overlay *@
+            <div class="lightbox-metadata">
+                <h3 id="lightbox-caption" class="lightbox-title"></h3>
+                <div class="lightbox-info">
+                    <span id="lightbox-date" class="lightbox-info-item"></span>
+                    <span id="lightbox-location" class="lightbox-info-item"></span>
+                    <span id="lightbox-filesize" class="lightbox-info-item"></span>
+                    <span id="lightbox-dimensions" class="lightbox-info-item"></span>
+                </div>
+                <div class="lightbox-counter">
+                    <span id="lightbox-counter-text"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

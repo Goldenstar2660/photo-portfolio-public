@@ -1,0 +1,134 @@
+<svg viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg">
+  <!-- Title -->
+  <text x="800" y="80" font-size="48" font-weight="bold" text-anchor="middle" fill="#1a1a1a">
+    Spec Kit Workflow
+  </text>
+  
+  <!-- Constitution box -->
+  <rect x="550" y="130" width="500" height="150" rx="20" fill="#4A6FA5" stroke="#3A5F95" stroke-width="2"/>
+  <text x="800" y="175" font-size="28" font-weight="600" text-anchor="middle" fill="white">
+    /constitution
+  </text>
+  <text x="800" y="210" font-size="24" text-anchor="middle" fill="white">
+    Project principles &amp; standards
+  </text>
+  
+  <!-- Feature Life Cycle title -->
+  <text x="800" y="350" font-size="42" font-weight="bold" text-anchor="middle" fill="#1a1a1a">
+    Feature Life Cycle
+  </text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#4A8DE4" />
+    </marker>
+  </defs>
+  
+  <!-- /specify box (green background) -->
+  <rect x="30" y="420" width="180" height="180" rx="15" fill="#90C890" stroke="#60A860" stroke-width="3"/>
+  <text x="120" y="470" font-size="24" font-weight="600" text-anchor="middle" fill="#1a5a1a">
+    /specify
+  </text>
+  <text x="120" y="505" font-size="18" text-anchor="middle" fill="#1a5a1a">
+    define what to
+  </text>
+  <text x="120" y="530" font-size="18" text-anchor="middle" fill="#1a5a1a">
+    build
+  </text>
+  <text x="120" y="565" font-size="16" text-anchor="middle" fill="#0a4a0a">
+    (no technical info)
+  </text>
+  
+  <!-- Arrow 1 -->
+  <line x1="210" y1="510" x2="250" y2="510" stroke="#4A8DE4" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <!-- /clarify box (white background) -->
+  <rect x="250" y="420" width="180" height="180" rx="15" fill="white" stroke="#4A8DE4" stroke-width="3"/>
+  <text x="340" y="470" font-size="24" font-weight="600" text-anchor="middle" fill="#4A8DE4">
+    /clarify
+  </text>
+  <text x="340" y="510" font-size="18" text-anchor="middle" fill="#4A8DE4">
+    follow up
+  </text>
+  <text x="340" y="540" font-size="18" text-anchor="middle" fill="#4A8DE4">
+    questions
+  </text>
+  
+  <!-- Arrow 2 -->
+  <line x1="430" y1="510" x2="470" y2="510" stroke="#4A8DE4" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <!-- /plan box (green background) -->
+  <rect x="470" y="420" width="180" height="180" rx="15" fill="#90C890" stroke="#60A860" stroke-width="3"/>
+  <text x="560" y="470" font-size="24" font-weight="600" text-anchor="middle" fill="#1a5a1a">
+    /plan
+  </text>
+  <text x="560" y="510" font-size="18" text-anchor="middle" fill="#1a5a1a">
+    Implementation
+  </text>
+  <text x="560" y="540" font-size="18" text-anchor="middle" fill="#1a5a1a">
+    plan
+  </text>
+  
+  <!-- Arrow 3 -->
+  <line x1="650" y1="510" x2="690" y2="510" stroke="#4A8DE4" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <!-- /tasks box (green background) -->
+  <rect x="690" y="420" width="180" height="180" rx="15" fill="#90C890" stroke="#60A860" stroke-width="3"/>
+  <text x="780" y="470" font-size="24" font-weight="600" text-anchor="middle" fill="#1a5a1a">
+    /tasks
+  </text>
+  <text x="780" y="505" font-size="18" text-anchor="middle" fill="#1a5a1a">
+    break plan into
+  </text>
+  <text x="780" y="535" font-size="18" text-anchor="middle" fill="#1a5a1a">
+    actionable steps
+  </text>
+  
+  <!-- Arrow 4 -->
+  <line x1="870" y1="510" x2="910" y2="510" stroke="#4A8DE4" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <!-- /analyze box (white background) -->
+  <rect x="910" y="420" width="180" height="180" rx="15" fill="white" stroke="#4A8DE4" stroke-width="3"/>
+  <text x="1000" y="470" font-size="24" font-weight="600" text-anchor="middle" fill="#4A8DE4">
+    /analyze
+  </text>
+  <text x="1000" y="510" font-size="18" text-anchor="middle" fill="#4A8DE4">
+    validate
+  </text>
+  <text x="1000" y="540" font-size="18" text-anchor="middle" fill="#4A8DE4">
+    docs
+  </text>
+  
+  <!-- Arrow 5 -->
+  <line x1="1090" y1="510" x2="1130" y2="510" stroke="#4A8DE4" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <!-- /implement box (green background) -->
+  <rect x="1130" y="420" width="180" height="180" rx="15" fill="#90C890" stroke="#60A860" stroke-width="3"/>
+  <text x="1220" y="470" font-size="24" font-weight="600" text-anchor="middle" fill="#1a5a1a">
+    /implement
+  </text>
+  <text x="1220" y="505" font-size="18" text-anchor="middle" fill="#1a5a1a">
+    execute tasks &amp;
+  </text>
+  <text x="1220" y="535" font-size="18" text-anchor="middle" fill="#1a5a1a">
+    test
+  </text>
+  
+  <!-- Arrow 6 -->
+  <line x1="1310" y1="510" x2="1350" y2="510" stroke="#4A8DE4" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <!-- Create PR/Merge box (white background) -->
+  <rect x="1350" y="420" width="220" height="180" rx="15" fill="white" stroke="#4A8DE4" stroke-width="3"/>
+  <text x="1460" y="480" font-size="24" font-weight="600" text-anchor="middle" fill="#4A8DE4">
+    Create
+  </text>
+  <text x="1460" y="520" font-size="18" text-anchor="middle" fill="#4A8DE4">
+    PR / Merge
+  </text>
+  
+  <!-- Return arrow -->
+  <path d="M 1460 600 L 1460 660 Q 1460 690 1430 690 L 150 690 Q 120 690 120 660 L 120 600" 
+        fill="none" stroke="#4A8DE4" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <circle cx="1460" cy="615" r="8" fill="#4A8DE4"/>
+</svg>

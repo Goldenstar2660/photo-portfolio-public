@@ -1,0 +1,19 @@
+@page
+@model PhotoGallery.PublicWeb.Pages.Error500Model
+@{
+    ViewData["Title"] = "Server Error";
+}
+
+<div class="container-fluid py-5 bg-dark text-secondary">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <i class="bi bi-exclamation-octagon display-1 text-danger"></i>
+                <h1 class="display-1 text-white">500</h1>
+                <h1 class="mb-4 text-white">Internal Server Error</h1>
+                <p class="mb-4">We're sorry, something went wrong on our end. Our team has been notified and we're working to fix the issue. Please try again later.</p>
+                <a class="btn btn-primary py-3 px-5" href="/">Go Back To Home</a>
+            </div>
+        </div>
+    </div>
+</div>

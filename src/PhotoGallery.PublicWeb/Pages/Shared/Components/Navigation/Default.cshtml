@@ -1,0 +1,53 @@
+@model PhotoGallery.PublicWeb.Models.NavigationViewModel
+
+@* Navigation Bar *@
+<div class="container-fluid bg-dark px-0">
+    <div class="row gx-0 wow fadeIn" data-wow-delay="0.1s">
+        <div class="col-lg-3 bg-primary d-none d-lg-block">
+            <a href="/" class="navbar-brand w-100 h-100 m-0 p-0 d-flex align-items-center justify-content-center">
+                <h1 class="m-0 text-white" style="font-size: 2.5rem; font-weight: 600;">Derek Chen</h1>
+            </a>
+        </div>
+        <div class="col-lg-9">
+            <nav class="navbar navbar-expand-lg navbar-dark p-3 p-lg-0 px-lg-5" style="background: #111111;" role="navigation" aria-label="Main navigation">
+                <a href="/" class="navbar-brand d-block d-lg-none">
+                    <h1 class="m-0 text-primary" style="font-size: 2rem; font-weight: 600;">Derek Chen</h1>
+                </a>
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                    <div class="navbar-nav mr-auto py-0">
+                        <a href="/" class="nav-item nav-link @(Model.ActivePage == "/Index" || string.IsNullOrEmpty(Model.ActivePage) ? "active" : "")" @(Model.ActivePage == "/Index" || string.IsNullOrEmpty(Model.ActivePage) ? "aria-current=\"page\"" : "")>Home</a>
+                        <a href="/About" class="nav-item nav-link @(Model.ActivePage == "/About" ? "active" : "")" @(Model.ActivePage == "/About" ? "aria-current=\"page\"" : "")>About</a>
+                        
+                        @if (Model.AlbumTopics.Any())
+                        {
+                            <div class="nav-item dropdown">
+                                <a href="/Albums" class="nav-link dropdown-toggle @(Model.ActivePage == "/Album" || Model.ActivePage == "/Albums" ? "active" : "")" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" @(Model.ActivePage == "/Album" || Model.ActivePage == "/Albums" ? "aria-current=\"page\"" : "") onclick="if (event.target === this) { window.location.href = '/Albums'; return false; }">Albums</a>
+                                <div class="dropdown-menu rounded-0 m-0" aria-label="Albums by topic">
+                                    @foreach (var topic in Model.AlbumTopics)
+                                    {
+                                        <h6 class="dropdown-header">@topic.Topic (@topic.AlbumCount)</h6>
+                                        @foreach (var album in topic.Albums)
+                                        {
+                                            <a href="/Album/@album.Id" class="dropdown-item">
+                                                @album.Name <span class="text-muted">(@album.PhotoCount)</span>
+                                            </a>
+                                        }
+                                        @if (topic != Model.AlbumTopics.Last())
+                                        {
+                                            <div class="dropdown-divider"></div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    @* Social icons hidden for now *@
+                    <div class="d-none"></div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>

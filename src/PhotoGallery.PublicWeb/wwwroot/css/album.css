@@ -1,0 +1,87 @@
+/* Album Page Styles */
+
+/* Photo Grid */
+.photo-grid {
+    margin-bottom: 2rem;
+}
+
+.photo-item {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.photo-item:hover {
+    transform: scale(1.05);
+    z-index: 10;
+}
+
+/* Photo Overlay */
+.photo-overlay {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.photo-item:hover .photo-overlay {
+    opacity: 1;
+}
+
+/* Lazy Loading Placeholder */
+.lazy-load {
+    background: #111111;
+    min-height: 200px;
+}
+
+.lazy-load.loaded {
+    animation: fadeIn 0.5s ease;
+}
+
+/* Thumbnail images use CSS cropping via object-fit */
+.photo-thumb {
+    aspect-ratio: 4 / 3;
+    height: auto;
+    object-fit: cover;
+    cursor: pointer;
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Responsive Grid Adjustments */
+@media (max-width: 768px) {
+    .photo-item:hover {
+        transform: scale(1.02);
+    }
+}
+
+/* Pagination Styling */
+.pagination .page-link {
+    background-color: #111111;
+    border-color: #FEA116;
+    color: #FEA116;
+}
+
+.pagination .page-link:hover {
+    background-color: #FEA116;
+    border-color: #FEA116;
+    color: #ffffff;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #FEA116;
+    border-color: #FEA116;
+    color: #ffffff;
+}
+
+.pagination .page-item.disabled .page-link {
+    background-color: #1a1a1a;
+    border-color: #333333;
+    color: #666666;
+}

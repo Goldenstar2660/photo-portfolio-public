@@ -1,0 +1,2 @@
+**/wwwroot/libs/** linguist-vendored
+*.jpg filter=lfs diff=lfs merge=lfs -text

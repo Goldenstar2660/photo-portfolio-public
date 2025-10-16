@@ -1,0 +1,22 @@
+@model PhotoGallery.PublicWeb.Models.BreadcrumbViewModel
+
+@if (Model?.Items != null && Model.Items.Any())
+{
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <ol class="breadcrumb">
+            @foreach (var item in Model.Items)
+            {
+                @if (item.IsActive)
+                {
+                    <li class="breadcrumb-item active" aria-current="page">@item.Text</li>
+                }
+                else
+                {
+                    <li class="breadcrumb-item">
+                        <a href="@item.Url">@item.Text</a>
+                    </li>
+                }
+            }
+        </ol>
+    </nav>
+}

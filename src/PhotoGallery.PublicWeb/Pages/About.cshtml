@@ -1,0 +1,145 @@
+@page
+@model AboutModel
+@{
+    ViewData["Title"] = "About";
+    ViewData["ActivePage"] = "About";
+}
+
+@section Styles {
+    <style>
+        .circular-text {
+            position: relative;
+            width: 160px;
+            height: 160px;
+        }
+        
+        .circular-text svg {
+            width: 100%;
+            height: 100%;
+            animation: rotate 8s linear infinite;
+        }
+        
+        .circular-text text {
+            fill: #000000;
+            font-family: "Poppins", sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+        
+        @@keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+}
+
+<!-- Hero Start -->
+<div class="container-fluid p-5 mb-5 bg-dark text-secondary">
+    <div class="container wow fadeIn" data-wow-delay="0.1s">
+        <h1 class="display-1 text-secondary text-center mb-0">About</h1>
+    </div>
+</div>
+<!-- Hero End -->
+
+<!-- About Start -->
+<div class="container-fluid p-5 text-dark">
+    <div class="row gx-5">
+        <div class="col-lg-5 mb-5 mb-lg-0 wow fadeIn" data-wow-delay="0.1s" style="min-height: 500px;">
+            <div class="position-relative h-100">
+                <div class="position-absolute top-0 start-0 circular-text" style="width: 160px; height: 160px;">
+                    <svg viewBox="0 0 160 160">
+                        <defs>
+                            <path id="circle" d="M 80, 80 m -70, 0 a 70,70 0 1,1 140,0 a 70,70 0 1,1 -140,0"/>
+                        </defs>
+                        <text>
+                            <textPath href="#circle">Photography - Cycling - Travel</textPath>
+                        </text>
+                    </svg>
+                </div>
+                <img class="position-absolute w-100 h-100 rounded-circle rounded-bottom rounded-end"
+                    src="~/img/Profile.jpg" style="object-fit: cover;" alt="@Model.About.Name">
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <div class="mb-4 wow fadeIn" data-wow-delay="0.2s">
+                <h5 class="section-title">About Me</h5>
+                <h1 class="display-3 mb-0">@Model.About.Name</h1>
+            </div>
+            <p class="mb-4 wow fadeIn text-dark" data-wow-delay="0.3s">@Model.About.Biography</p>
+            
+            @if (!string.IsNullOrEmpty(Model.About.Email))
+            {
+                <div class="row">
+                    <div class="col-sm-6 wow fadeIn" data-wow-delay="0.4s">
+                        <div class="bg-light rounded p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="flex-shrink-0 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3" style="width: 60px; height: 60px;">
+                                    <i class="bi bi-envelope text-white fs-4"></i>
+                                </div>
+                            </div>
+                            <h4 class="text-dark">Get In Touch</h4>
+                            <p class="mb-2 text-dark">Feel free to contact me</p>
+                            <a href="mailto:@Model.About.Email" class="text-primary">@Model.About.Email</a>
+                        </div>
+                    </div>
+                    
+                    @if (!string.IsNullOrEmpty(Model.About.Tagline))
+                    {
+                        <div class="col-sm-6 wow fadeIn" data-wow-delay="0.5s">
+                            <div class="bg-light rounded p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="flex-shrink-0 d-flex align-items-center justify-content-center bg-primary rounded-circle me-3" style="width: 60px; height: 60px;">
+                                        <i class="bi bi-camera text-white fs-4"></i>
+                                    </div>
+                                </div>
+                                <h4 class="text-dark">Photography</h4>
+                                <p class="mb-0 text-dark">@Model.About.Tagline</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!-- About End -->
+
+<!-- Hobbies & Interests Section (Facts equivalent) -->
+@if (Model.About.Hobbies != null && Model.About.Hobbies.Any())
+{
+    <div class="container-fluid bg-dark facts p-5 my-5">
+        <div class="row gx-5 gy-4 py-5 justify-content-center">
+            @foreach (var hobby in Model.About.Hobbies)
+            {
+                var delay = (Model.About.Hobbies.IndexOf(hobby) + 1) * 0.1;
+                <div class="col-lg-4 col-md-6 wow fadeIn" data-wow-delay="@(delay)s">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 rounded-circle d-flex align-items-center justify-content-center mb-3"
+                            style="width: 80px; height: 80px; background: #111111;">
+                            <i class="@hobby.IconClass text-primary" style="font-size: 2rem;"></i>
+                        </div>
+                        <div class="ps-4">
+                            <h5 class="text-white">@hobby.Title</h5>
+                            <p class="text-secondary small">@hobby.Description</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<!-- Call to Action (Team equivalent) -->
+<div class="container-fluid p-5 text-dark">
+    <div class="mb-5 text-center wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px; margin: auto;">
+        <h5 class="section-title">Photo Gallery</h5>
+        <h1 class="display-3 mb-0">Explore My Work</h1>
+    </div>
+    <div class="row g-5 justify-content-center">
+        <div class="col-lg-6 col-md-8 text-center wow fadeIn" data-wow-delay="0.3s">
+            <p class="mb-4 text-dark">Browse through my collection of photos from various adventures and locations. Each album tells a unique story and captures special moments.</p>
+            <a asp-page="/Index" class="btn btn-primary btn-lg py-3 px-5">View Albums</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+﻿{
+  "applications": {
+    "PhotoGallery.HttpApi.Host": {
+      "type": "dotnet-project",
+      "launchUrl": "https://localhost:44304",
+      "path": "../../../src/PhotoGallery.HttpApi.Host/PhotoGallery.HttpApi.Host.csproj",
+      "kubernetesService": ".*-httpapihost$",
+      "healthCheckEndpoint": "/health-status",
+      "healthUiEndpoint": "/health-ui",
+      "execution": {
+        "order": 4
+      }
+    }
+  },
+  "containers": {
+    "serviceName": "PhotoGallery-Containers",
+  }
+}

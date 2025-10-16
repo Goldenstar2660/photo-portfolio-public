@@ -1,0 +1,96 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+/* Breadcrumb Navigation */
+.breadcrumb-nav {
+    padding: 0;
+    margin: 0;
+}
+
+.breadcrumb {
+    background-color: transparent;
+    padding: 0.5rem 0;
+    margin-bottom: 0;
+}
+
+/* Cover thumbnails for album cards and featured sections */
+.cover-thumb {
+  width: 100%;
+  height: 250px !important; /* override img-fluid height:auto */
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border-radius: 0.5rem; /* match card rounding */
+}
+
+@media (max-width: 576px) {
+  .cover-thumb {
+    height: 200px !important;
+  }
+}
+
+.breadcrumb-item {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.breadcrumb-item a {
+    color: #FEA116;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.breadcrumb-item a:hover {
+    color: #FFB733;
+    text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: rgba(255, 255, 255, 0.4);
+    content: '';
+    padding-right: 0.5rem;
+}
+
+/* Navigation - Albums dropdown should not be orange by default */
+.navbar-nav .nav-item .dropdown-toggle {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.navbar-nav .nav-item .dropdown-toggle:hover {
+    color: #FEA116 !important;
+}
+
+.navbar-nav .nav-item .dropdown-toggle.active {
+    color: #FEA116 !important;
+}

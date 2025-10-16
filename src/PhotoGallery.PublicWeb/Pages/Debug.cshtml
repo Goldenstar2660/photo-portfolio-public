@@ -1,0 +1,303 @@
+@page
+@model PhotoGallery.PublicWeb.Pages.DebugModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Database Debug Info</title>
+    <style>
+        body { 
+            font-family: 'Consolas', 'Courier New', monospace; 
+            padding: 20px; 
+            background: #0d1117; 
+            color: #58a6ff; 
+            line-height: 1.6;
+        }
+        h1 { color: #58a6ff; border-bottom: 2px solid #58a6ff; padding-bottom: 10px; }
+        h2 { color: #f0883e; margin-top: 30px; border-left: 4px solid #f0883e; padding-left: 10px; }
+        h3 { color: #79c0ff; margin: 15px 0 10px 0; }
+        .stats { 
+            background: #161b22; 
+            padding: 15px; 
+            border-radius: 6px; 
+            margin: 20px 0;
+            border: 1px solid #30363d;
+        }
+        .album { 
+            background: #161b22; 
+            padding: 20px; 
+            margin: 15px 0; 
+            border-left: 4px solid #58a6ff; 
+            border-radius: 6px;
+        }
+        .photo { 
+            background: #0d1117; 
+            padding: 12px; 
+            margin: 8px 0 8px 20px; 
+            border-left: 2px solid #30363d; 
+            border-radius: 4px;
+        }
+        .count { color: #3fb950; font-weight: bold; }
+        .empty { color: #f85149; font-style: italic; }
+        .error { 
+            background: #1c1011; 
+            color: #ffa198; 
+            padding: 20px; 
+            border-left: 4px solid #f85149;
+            border-radius: 6px;
+            margin: 20px 0;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .label { color: #8b949e; }
+        .value { color: #c9d1d9; }
+        .path { color: #a5d6ff; font-family: monospace; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #161b22;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        th {
+            background: #21262d;
+            color: #58a6ff;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #30363d;
+        }
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #30363d;
+            color: #c9d1d9;
+        }
+        tr:hover {
+            background: #1c2128;
+        }
+        .icon { font-size: 1.2em; margin-right: 8px; }
+        a { color: #58a6ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .back-link {
+            display: inline-block;
+            background: #238636;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            background: #2ea043;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1><span class="icon">🔍</span>PhotoGallery Database Debug Information</h1>
+    
+    <a href="/" class="back-link">← Back to Home</a>
+    
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="error">
+            <h2>❌ Error Loading Data</h2>
+            @Model.ErrorMessage
+        </div>
+    }
+    else
+    {
+        <div class="stats">
+            <h2><span class="icon">📊</span>Database Statistics</h2>
+            <table>
+                <tr>
+                    <th>Metric</th>
+                    <th>Count</th>
+                </tr>
+                <tr>
+                    <td><strong>Total Albums</strong></td>
+                    <td class="count">@Model.Albums.TotalCount</td>
+                </tr>
+                <tr>
+                    <td><strong>Total Photos</strong></td>
+                    <td class="count">@Model.PhotosByAlbum.Values.Sum(p => p.TotalCount)</td>
+                </tr>
+                <tr>
+                    <td><strong>Albums with Photos</strong></td>
+                    <td class="count">@Model.PhotosByAlbum.Values.Count(p => p.TotalCount > 0)</td>
+                </tr>
+                <tr>
+                    <td><strong>Empty Albums</strong></td>
+                    <td class="count">@Model.PhotosByAlbum.Values.Count(p => p.TotalCount == 0)</td>
+                </tr>
+            </table>
+        </div>
+
+        <h2><span class="icon">📁</span>Albums in Database (<span class="count">@Model.Albums.TotalCount</span> total)</h2>
+        
+        @if (Model.Albums.TotalCount == 0)
+        {
+            <div class="album">
+                <p class="empty">⚠️ No albums found in database!</p>
+                <p>This means the seed data hasn't run or the database is empty.</p>
+                <h3>To fix this:</h3>
+                <ol>
+                    <li>Stop the PublicWeb application (Ctrl+C)</li>
+                    <li>Run the DbMigrator: <code class="path">dotnet run --project src/PhotoGallery.DbMigrator</code></li>
+                    <li>Restart the PublicWeb application</li>
+                </ol>
+            </div>
+        }
+        else
+        {
+            @foreach (var album in Model.Albums.Items)
+            {
+                var photoCount = Model.PhotosByAlbum.ContainsKey(album.Name) 
+                    ? Model.PhotosByAlbum[album.Name].TotalCount 
+                    : 0;
+                
+                <div class="album">
+                    <h3><span class="icon">📁</span>@album.Name</h3>
+                    
+                    <table>
+                        <tr>
+                            <td class="label">Album ID</td>
+                            <td class="value"><code>@album.Id</code></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Topic/Category</td>
+                            <td class="value"><strong>@album.Topic</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="label">Description</td>
+                            <td class="value">@album.Description</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Cover Image Path</td>
+                            <td class="path">@album.CoverImagePath</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Display Order</td>
+                            <td class="value">@album.DisplayOrder</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Photo Count</td>
+                            <td class="count">@photoCount photos</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Created</td>
+                            <td class="value">@album.CreationTime</td>
+                        </tr>
+                    </table>
+                    
+                    @if (photoCount > 0)
+                    {
+                        <h3 style="margin-top: 20px;"><span class="icon">📷</span>Photos in this Album</h3>
+                        @foreach (var photo in Model.PhotosByAlbum[album.Name].Items)
+                        {
+                            <div class="photo">
+                                <strong>📷 @photo.FileName</strong>
+                                <table style="margin-top: 10px;">
+                                    <tr>
+                                        <td class="label">Photo ID</td>
+                                        <td class="value"><code>@photo.Id</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">File Path</td>
+                                        <td class="path">@photo.FilePath</td>
+                                    </tr>
+                                    @if (!string.IsNullOrEmpty(photo.ThumbnailPath))
+                                    {
+                                        <tr>
+                                            <td class="label">Thumbnail Path</td>
+                                            <td class="path">@photo.ThumbnailPath</td>
+                                        </tr>
+                                    }
+                                    @if (photo.DateTaken.HasValue)
+                                    {
+                                        <tr>
+                                            <td class="label">Date Taken</td>
+                                            <td class="value">@photo.DateTaken.Value.ToString("MMMM dd, yyyy")</td>
+                                        </tr>
+                                    }
+                                    @if (!string.IsNullOrEmpty(photo.Location))
+                                    {
+                                        <tr>
+                                            <td class="label">Location</td>
+                                            <td class="value">@photo.Location</td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td class="label">Display Order</td>
+                                        <td class="value">@photo.DisplayOrder</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="empty" style="margin-top: 15px;">📭 No photos in this album yet</p>
+                        <p style="color: #8b949e;">Photos can be added via the admin interface or API</p>
+                    }
+                </div>
+            }
+        }
+        
+        <h2><span class="icon">🔧</span>Troubleshooting Guide</h2>
+        <div class="album">
+            <h3>If you see albums you don't recognize:</h3>
+            <ul>
+                <li><strong>The database was seeded before</strong> - Your seed data in <code class="path">PhotoGalleryDataSeederContributor.cs</code> only runs when the database is empty (count &lt;= 0)</li>
+                <li><strong>Someone added albums via API</strong> - Albums were created through the HttpApi.Host or admin interface</li>
+                <li><strong>Solution:</strong> Delete the database and run DbMigrator again to get fresh seed data</li>
+            </ul>
+            
+            <h3>If you see 0 albums:</h3>
+            <ul>
+                <li>The database hasn't been seeded yet</li>
+                <li>Run: <code class="path">cd src/PhotoGallery.DbMigrator && dotnet run</code></li>
+            </ul>
+            
+            <h3>If albums exist but don't show on the website:</h3>
+            <ul>
+                <li>Check browser console (F12) for JavaScript errors</li>
+                <li>Check that PublicWeb is running: <code class="path">dotnet run --project src/PhotoGallery.PublicWeb</code></li>
+                <li>Clear browser cache and reload</li>
+            </ul>
+            
+            <h3>To completely reset the database:</h3>
+            <ol>
+                <li>Stop all running applications</li>
+                <li>Delete the database (using SQL Server Management Studio or <code>DROP DATABASE PhotoGallery</code>)</li>
+                <li>Run DbMigrator: <code class="path">cd src/PhotoGallery.DbMigrator && dotnet run</code></li>
+                <li>Restart PublicWeb: <code class="path">cd src/PhotoGallery.PublicWeb && dotnet run</code></li>
+            </ol>
+        </div>
+        
+        <h2><span class="icon">📋</span>Current Seed Data (from code)</h2>
+        <div class="album">
+            <p>According to <code class="path">PhotoGalleryDataSeederContributor.cs</code>, the following albums should be seeded:</p>
+            <ol>
+                <li><strong>The Maritimes</strong> (Topic: Travel) - DisplayOrder: 1</li>
+                <li><strong>Europe Trip</strong> (Topic: Travel) - DisplayOrder: 2</li>
+                <li><strong>Mississauga</strong> (Topic: Local) - DisplayOrder: 3</li>
+                <li><strong>School Activities</strong> (Topic: Education) - DisplayOrder: 4</li>
+            </ol>
+            <p style="margin-top: 15px;">
+                <strong>⚠️ Important:</strong> These albums are only created if the album count is 0 when DbMigrator runs.
+                If you see different albums above, it means the database already had data when last seeded.
+            </p>
+        </div>
+    }
+    
+    <a href="/" class="back-link">← Back to Home</a>
+    
+    <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #30363d; color: #8b949e; text-align: center;">
+        <p>Generated on @DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")</p>
+    </div>
+</body>
+</html>
